@@ -2,6 +2,7 @@
 # attempt to show the main network info in a clear readable manner
 
 # formatting basics
+bold=$(tput bold)
 uline=$(tput smul)
 reset=$(tput sgr0)
 fgred=$(tput setaf 1)
@@ -20,8 +21,9 @@ echo ""
 
 
 ### the interfaces
+echo "${fgteal}${uline}Interface Info:${reset}"
 (
-    echo "${fgteal}${uline}if status IPv4 IPv6 MAC${reset}"
+    echo "${bold}iface Status IPv4 IPv6 MAC${reset}"
     (ip -o link ; ip -o  a ; echo "this exists only to flush data" ) | sort -V | awk '
         /inet6/ {ip6=$4} 
         /inet / {ip4=$4}
