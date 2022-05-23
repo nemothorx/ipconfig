@@ -12,18 +12,22 @@ fgteal=$(tput setaf 6)
 fgwhite=$(tput setaf 7)
 
 
-#prints loopback info
+### prints loopback info
 echo "${fgteal}${uline}loopback:${reset}"
 ip --brief address show | head -1
 ip --brief link | head -1
 printf "\n"
 
-#display network ID info
+
+### display network ID info
 echo "${fgteal}${uline}Network Info:${reset}"	#header for Net info
 ip route show | tail -1
 printf "\n"
 
 line_ct=$(ip --brief address show | wc -l)
+
+
+## and individual interface info:
 
 #if more than one interface (&lo)
 if [ $line_ct -gt 2 ] ; then
@@ -47,16 +51,16 @@ else	#if only one if
     ip --brief link | tail -1
 fi
 echo "${reset}"
-#default gateway info
-setterm -underline on
+
+
+### default gateway info
 echo -e "\n${fgteal}${uline}Default Gateway:${reset}"
 echo -n "${fgblue}$(ip -4 route show | head -1)" | sed 's/dev.*//' | sed 's/default via //'
 echo -e -n "\t\t$(ip -6 route show | tail -1)\n" | sed 's/dev.*//'
 printf "\n"
 
-#dns info
+
+### dns info
 echo "${fgteal}${uline}Default DNS:${reset}"	#DNS header
-echo -n "${fgpurple}"
-cat /etc/resolv.conf | tail -3 | sed 's/search //' | sed 's/nameserver //g'	#print DNS info
-tput sgr0	#reset font-color
-printf "\n"
+cat /etc/resolv.conf | grep -v '^#' | grep . | sort | sed "s/^\([a-z]*\) /${reset}\1 ${fgpurple}/"	#print DNS info
+printf "${reset}\n"
