@@ -1,4 +1,5 @@
 #!/bin/bash
+# attempt to show the main network info in a clear readable manner
 
 # formatting basics
 uline=$(tput smul)
@@ -15,7 +16,7 @@ fgwhite=$(tput setaf 7)
 ### display network ID info
 echo "${fgteal}${uline}Network Info:${reset}"	#header for Net info
 ip route show | grep -v via | cut -d" " -f 1-3 | column -t
-printf "\n"
+echo ""
 
 
 ### the interfaces
@@ -40,16 +41,17 @@ printf "\n"
 ) | column -n -t 
 echo ""
 
+
 ### default gateway info
 echo -e "${fgteal}${uline}Default Gateway:${reset}"
 (
 echo "${reset}IPv4: ${fgblue}$(ip -4 route | awk '/default/ {print $3,$2,$5}' )" 
 echo "${reset}IPv6: ${fgblue}$(ip -6 route | awk '/default/ {print $3,$2,$5}' )" 
 ) | column -t
-printf "\n"
+echo ""
 
 
 ### dns info
 echo "${fgteal}${uline}Default DNS:${reset}"	#DNS header
 cat /etc/resolv.conf | grep -v '^#' | grep . | sort | sed "s/^\([a-z]*\) /${reset}\1 ${fgpurple}/"	#print DNS info
-printf "${reset}\n"
+echo "${reset}"
