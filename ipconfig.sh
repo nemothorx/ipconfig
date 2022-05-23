@@ -1,15 +1,25 @@
 #!/bin/bash
 
+# formatting basics
+uline=$(tput smul)
+reset=$(tput sgr0)
+fgred=$(tput setaf 1)
+fgreen=$(tput setaf 2)
+fgyellow=$(tput setaf 3)
+fgblue=$(tput setaf 4)
+fgpurple=$(tput setaf 5)
+fgteal=$(tput setaf 6)
+fgwhite=$(tput setaf 7)
+
+
 #prints loopback info
-echo "loopback:"
+echo "${fgteal}${uline}loopback:${reset}"
 ip --brief address show | head -1
 ip --brief link | head -1
 printf "\n"
 
 #display network ID info
-tput setaf 6
-setterm -underline on; echo Network Info:	#header for Net info
-setterm -underline off; tput setaf 7		#reformat
+echo "${fgteal}${uline}Network Info:${reset}"	#header for Net info
 ip route show | tail -1
 printf "\n"
 
@@ -22,11 +32,9 @@ then
 		let x=$i-1		#set if num as i-1
 		let color=($x-1)%7+1	#cycle color between 1 and 7
 		tput setaf $color	#change color for each if
-		setterm -underline on	#underline header
-		echo -e $x "\n\tif:\t\tStatus:\t\tAddresses:"	#header
-		setterm -underline off
+		echo -e "${uline}$x \n\tif:\t\tStatus:\t\tAddresses:${reset}"	#header
 		tput setaf 4		#ip=blue
-		printf "IP:\t"		#print if(i) ip
+		printf "${fgblue}IP:\t"		#print if(i) ip
 		ip --brief address show | sed -n ${i}p
 		tput setaf 3		#mac=orange
 		printf "MAC:\t:"	#print if(i) MAC
@@ -34,30 +42,23 @@ then
 		printf "\n"
     	done
 else	#if only one if
-	setterm -underline on
-	printf "1:\tif:   \t\tStatus:\t\tAddresses:\n"	#header
-	setterm -underline off
-	tput setaf 4		#ip=blue
-	printf "IP:\t"		#print IP
+	printf "${uline}1:\tif:   \t\tStatus:\t\tAddresses:${reset}\n"	#header
+	printf "${fgblue}IP:\t"		#print IP
 	ip --brief address show | tail -1
-	tput setaf 3		#mac=orange
-	printf "MAC:\t"		#print MAC
+	printf "${fgyellow}MAC:\t"		#print MAC
 	ip --brief link | tail -1
 fi
+echo "${reset}"
 #default gateway info
 setterm -underline on
-echo -e "\n$(tput setaf 6)Default Gateway:"
-setterm -underline off
-tput setaf 4	#ip=blue
-echo -n $(ip -4 route show | head -1) | sed 's/dev.*//' | sed 's/default via //'
+echo -e "\n${fgteal}${uline}Default Gateway:${reset}"
+echo -n "${fgblue}$(ip -4 route show | head -1)" | sed 's/dev.*//' | sed 's/default via //'
 echo -e -n "\t\t" $(ip -6 route show | tail -1)"\n" | sed 's/dev.*//'
 printf "\n"
 
 #dns info
-setterm -underline on
-echo "$(tput setaf 6)Default DNS:"	#DNS header
-setterm -underline off
-tput setaf 5   	#make DNS purple
+echo "${fgteal}${uline}Default DNS:${reset}"	#DNS header
+echo -n "${fgpurple}"
 cat /etc/resolv.conf | tail -3 | sed 's/search //' | sed 's/nameserver //g'	#print DNS info
 tput sgr0	#reset font-color
 printf "\n"
