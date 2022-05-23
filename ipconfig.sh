@@ -19,11 +19,25 @@ printf "\n"
 
 
 ### the interfaces
-# TODO/BUG: this definitely fails formatting on more complex networks. eg, servers with KVM instances and relatively simple virtual networks give nonsensical
 (
-echo "${fgteal}${uline}if status IPv4 IPv6 MAC${reset}"
-(ip -o link ; ip -o  a ) | sort -V | awk '/inet6/ {printf $2","$4","} /inet / {printf $4","} /state/ {print $9","$(NF-2)}' | awk -F, '{print $1,$4,$3,$2,$5}'
-) | column -t
+    echo "${fgteal}${uline}if status IPv4 IPv6 MAC${reset}"
+    (ip -o link ; ip -o  a ; echo "this exists only to flush data" ) | sort -V | awk '
+        /inet6/ {ip6=$4} 
+        /inet / {ip4=$4}
+        { if ($2~":") 
+            {   
+                iface=$2 ; mac=$(NF-2) ; status=$(NF-10)
+                print iface,status,ip4,ip6,mac
+                iface=""
+                status=""
+                ip4=""
+                ip6=""
+                mac=""
+            }
+        }
+
+            ' 
+) | column -n -t 
 echo ""
 
 ### default gateway info
