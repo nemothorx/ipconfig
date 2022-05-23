@@ -54,9 +54,11 @@ echo "${reset}"
 
 
 ### default gateway info
-echo -e "\n${fgteal}${uline}Default Gateway:${reset}"
-echo -n "${fgblue}$(ip -4 route show | head -1)" | sed 's/dev.*//' | sed 's/default via //'
-echo -e -n "\t\t$(ip -6 route show | tail -1)\n" | sed 's/dev.*//'
+echo -e "${fgteal}${uline}Default Gateway:${reset}"
+(
+echo "${reset}IPv4: ${fgblue}$(ip -4 route show | awk '/default/ {print $3,$2,$5}' )" 
+echo "${reset}IPv6: ${fgblue}$(ip -6 route show | awk '/default/ {print $3,$2,$5}' )" 
+) | column -t
 printf "\n"
 
 
