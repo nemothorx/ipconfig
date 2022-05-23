@@ -17,26 +17,19 @@ echo "${fgteal}${uline}Network Info:${reset}"	#header for Net info
 ip route show | tail -1
 printf "\n"
 
-line_ct=$(ip --brief address show | wc -l)
 
-
-## individual interface info:
-for ((i=1;i<=$line_ct; i++)) ; do
-    let color=$(( ($i-1)%7+1 ))	#cycle color between 1 and 7
-    tput setaf $color	#change color for each if
-    echo -e "${uline}$i \tif:\t\tStatus:\t\tAddresses:${reset}"	#header
-    printf "${fgblue}IP:\t"		#print if(i) ip
-    ip --brief address show | sed -n ${i}p
-    printf "${fgyellow}MAC:\t"	#print if(i) MAC
-    ip --brief link | sed -n ${i}p
-    printf "${reset}\n"
-done
+### the interfaces
+(
+echo "${fgteal}${uline}if status IPv4 IPv6 MAC${reset}"
+(ip -o link ; ip -o  a ) | sort -V | awk '/inet6/ {printf $2","$4","} /inet / {printf $4","} /state/ {print $9","$(NF-2)}' | awk -F, '{print $1,$4,$3,$2,$5}'
+) | column -t
+echo ""
 
 ### default gateway info
 echo -e "${fgteal}${uline}Default Gateway:${reset}"
 (
-echo "${reset}IPv4: ${fgblue}$(ip -4 route show | awk '/default/ {print $3,$2,$5}' )" 
-echo "${reset}IPv6: ${fgblue}$(ip -6 route show | awk '/default/ {print $3,$2,$5}' )" 
+echo "${reset}IPv4: ${fgblue}$(ip -4 route | awk '/default/ {print $3,$2,$5}' )" 
+echo "${reset}IPv6: ${fgblue}$(ip -6 route | awk '/default/ {print $3,$2,$5}' )" 
 ) | column -t
 printf "\n"
 
