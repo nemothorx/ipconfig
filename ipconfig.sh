@@ -33,8 +33,8 @@ line_ct=$(ip --brief address show | wc -l)
 if [ $line_ct -gt 2 ] ; then
     #iterate over interfaces
     for ((i=2;i<=$line_ct; i++)) ; do
-        let x=$i-1		#set if num as i-1
-        let color=($x-1)%7+1	#cycle color between 1 and 7
+        let x=$(( i-1 ))	#set if num as i-1
+        let color=$(( ($x-1)%7+1 ))	#cycle color between 1 and 7
         tput setaf $color	#change color for each if
         echo -e "${uline}$x \n\tif:\t\tStatus:\t\tAddresses:${reset}"	#header
         printf "${fgblue}IP:\t"		#print if(i) ip
