@@ -14,11 +14,12 @@ fgwhite=$(tput setaf 7)
 
 ### display network ID info
 echo "${fgteal}${uline}Network Info:${reset}"	#header for Net info
-ip route show | tail -1
+ip route show | grep -v via | cut -d" " -f 1-3 | column -t
 printf "\n"
 
 
 ### the interfaces
+# TODO/BUG: this definitely fails formatting on more complex networks. eg, servers with KVM instances and relatively simple virtual networks give nonsensical
 (
 echo "${fgteal}${uline}if status IPv4 IPv6 MAC${reset}"
 (ip -o link ; ip -o  a ) | sort -V | awk '/inet6/ {printf $2","$4","} /inet / {printf $4","} /state/ {print $9","$(NF-2)}' | awk -F, '{print $1,$4,$3,$2,$5}'
