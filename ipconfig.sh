@@ -5,7 +5,7 @@
 uline=$(tput smul)
 reset=$(tput sgr0)
 fgred=$(tput setaf 1)
-fgreen=$(tput setaf 2)
+fggreen=$(tput setaf 2)
 fgyellow=$(tput setaf 3)
 fgblue=$(tput setaf 4)
 fgpurple=$(tput setaf 5)
@@ -38,15 +38,15 @@ echo ""
         }
 
             ' 
-) | column -n -t 
+) | column -n -t | sed -e "s/UNKNOWN/${fgyellow}UNKNOWN${reset}/g ; s/DOWN/${fgred}DOWN${reset}/g ; s/UP/${fggreen}UP${reset}/g"
 echo ""
 
 
 ### default gateway info
 echo -e "${fgteal}${uline}Default Gateway:${reset}"
 (
-echo "${reset}IPv4: ${fgblue}$(ip -4 route | awk '/default/ {print $3,$2,$5}' )" 
-echo "${reset}IPv6: ${fgblue}$(ip -6 route | awk '/default/ {print $3,$2,$5}' )" 
+echo "${reset}IPv4: ${fgpurple}$(ip -4 route | awk '/default/ {print $3,$2,$5}' )" 
+echo "${reset}IPv6: ${fgpurple}$(ip -6 route | awk '/default/ {print $3,$2,$5}' )" 
 ) | column -t
 echo ""
 
