@@ -12,4 +12,4 @@ the future
 You'll want to download the file and place it in /usr/local/bin/ or other
 suitable directory in $PATH. 
 
-Optional extra: create an alias for it to make it easier to call; I suggest ipconfinfo - do so by adding the following to the .bashrc file in the user's home directory: `alias ipinfo='ipconfig.sh'`
+Optional extra: create an alias for it to make it easier to call; I suggest ipinfo - do so by adding the following to the .bashrc file in the user's home directory: `alias ipinfo='ipconfig.sh'`
