@@ -58,5 +58,5 @@ echo ""
 
 ### dns info
 echo "${fgteal}${uline}Default DNS:${reset}"	#DNS header
-cat /etc/resolv.conf | grep -v '^#' | grep . | sort | sed "s/^\([a-z]*\) /${reset}\1 ${fgpurple}/"	#print DNS info
+cat /etc/resolv.conf | grep -v '^#' | grep . | sed "s/^\([a-z]*\) /${reset}\1 ${fgpurple}/"	#print DNS info
 echo "${reset}"
