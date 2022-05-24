@@ -10,6 +10,8 @@ the future
 
 ## Configuring:
 You'll want to download the file and place it in /usr/local/bin/ or other
-suitable directory in $PATH. 
+suitable directory in $PATH. Remove .sh suffix or create easier alias to taste.
 
-Optional extra: create an alias for it to make it easier to call; I suggest ipinfo - do so by adding the following to the .bashrc file in the user's home directory: `alias ipinfo='ipconfig.sh'`
+## Credits
+* Origin: https://www.reddit.com/r/linux/comments/uvq8nw/script_to_spruce_up_ips_output/
+* This code subsequently forked from: https://github.com/pingej77/ipconfig.sh
