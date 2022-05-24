@@ -43,7 +43,7 @@ echo "${fgteal}${uline}Interface Info:${reset}"
         }
 
             ' 
-) | column -n -t | sed -e "s/UNKNOWN/${fgyellow}UNKNOWN${reset}/g ; s/DOWN/${fgred}DOWN${reset}/g ; s/UP/${fggreen}UP${reset}/g"
+) | sed -e "s/: / /g ; s/UNKNOWN/${fgyellow}UNKNOWN${reset}/g ; s/DOWN/${fgred}DOWN${reset}/g ; s/UP/${fggreen}UP${reset}/g" | column -n -t
 echo ""
 
 
