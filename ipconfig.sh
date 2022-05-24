@@ -25,9 +25,12 @@ echo "${fgteal}${uline}Interface Info:${reset}"
 (
     echo "${bold}iface Status IPv4 IPv6 MAC${reset}"
     (ip -o link ; ip -o  a ; echo "this exists only to flush data" ) | sort -V | awk '
+        # populate our ip6 and ip4 vars from a matching line
         /inet6/ {ip6=$4} 
         /inet / {ip4=$4}
         { if ($2~":") 
+            # due to the sort-V, this should be the last line of each interface
+            # more vars but also extra: print output and reset vars
             {   
                 iface=$2 ; mac=$(NF-2) ; status=$(NF-10)
                 print iface,status,ip4,ip6,mac
